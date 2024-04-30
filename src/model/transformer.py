@@ -5,7 +5,7 @@ from model.encoder import Encoder, EncoderLayer
 from model.decoder import Decoder, DecoderLayer
 from model.embeddings import PositionalEncoding, Embeddings
 from model.attention import MultiHeadedAttention
-from src.common import Generator
+from common import Generator
 
 class PositionwiseFeedForward(nn.Module):
 	"Implements FFN equation."

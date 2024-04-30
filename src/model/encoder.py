@@ -1,5 +1,5 @@
 import torch.nn as nn
-from src.common import repeat, LayerNorm, SublayerConnection
+from common import repeat, LayerNorm, SublayerConnection
 
 class Encoder(nn.Module):
 	"Core encoder is a stack of N layers"

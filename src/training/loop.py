@@ -1,4 +1,5 @@
 import time
+import os
 
 class TrainState:
 	"""Track number of steps, examples, and tokens processed"""
@@ -15,6 +16,8 @@ def run_epoch(
     optimizer,
     scheduler,
     mode="train",
+		epoch=0,
+		max_steps=-1,
     accum_iter=1,
     train_state=TrainState(),
 ):
@@ -22,7 +25,6 @@ def run_epoch(
 	start = time.time()
 	total_tokens = 0
 	total_loss = 0
-	tokens = 0
 	n_accum = 0
 	for i, batch in enumerate(data_iter):
 		out = model.forward(batch.src, batch.tgt, batch.src_mask, batch.tgt_mask)
@@ -42,15 +44,14 @@ def run_epoch(
 
 		total_loss += loss
 		total_tokens += batch.ntokens
-		tokens += batch.ntokens
-		if i % 40 == 1 and (mode == "train" or mode == "train+log"):
+		if mode == "train" or mode == "train+log":
 			lr = optimizer.param_groups[0]["lr"]
 			elapsed = time.time() - start
-			print(
-			  ("Epoch Step: %6d | Accumulation Step: %3d | Loss: %6.2f " + "| Tokens / Sec: %7.1f | Learning Rate: %6.1e") %
-			  (i, n_accum, loss / batch.ntokens, tokens / elapsed, lr))
-			start = time.time()
-			tokens = 0
+			os.system('clear')
+			if i > max_steps:
+				max_steps = i
+
+			print(f"Epoch: {epoch}\nStep: {i}/{max_steps}\nLoss: {loss / batch.ntokens}\nSteps / Sec: {i / elapsed}\nLR: {lr:6.1e}")
 		del loss
 		del loss_node
-	return total_loss / total_tokens, train_state
+	return total_loss / total_tokens, train_state, max_steps

@@ -1,5 +1,5 @@
 import torch.nn as nn
-from src.common import repeat, LayerNorm, SublayerConnection
+from common import repeat, LayerNorm, SublayerConnection
 
 class Decoder(nn.Module):
 	"Generic N layer decoder with masking."

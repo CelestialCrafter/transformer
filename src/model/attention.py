@@ -1,7 +1,7 @@
 import math
 import torch
 import torch.nn as nn
-from src.common import repeat
+from common import repeat
 
 def attention(query, key, value, mask=None, dropout=None):
 	"Compute 'Scaled Dot Product Attention'"
